@@ -1,4 +1,4 @@
-module alessandro-c/gomemcached-lock
+module github.com/alessandro-c/gomemcached-lock
 
 go 1.12
 

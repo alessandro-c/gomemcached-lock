@@ -1,8 +1,8 @@
 package gomemcache
 
 import (
-	"alessandro-c/gomemcached-lock/adapters"
-	owntesting "alessandro-c/gomemcached-lock/testing"
+	"github.com/alessandro-c/gomemcached-lock/adapters"
+	owntesting "github.com/alessandro-c/gomemcached-lock/testing"
 	"github.com/bradfitz/gomemcache/memcache"
 	"testing"
 	"time"

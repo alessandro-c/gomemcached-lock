@@ -2,7 +2,7 @@
 package gomemcache
 
 import (
-	"alessandro-c/gomemcached-lock/adapters"
+	"github.com/alessandro-c/gomemcached-lock/adapters"
 	"github.com/bradfitz/gomemcache/memcache"
 	"math"
 	"time"

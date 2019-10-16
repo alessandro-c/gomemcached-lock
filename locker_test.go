@@ -1,8 +1,8 @@
 package lock
 
 import (
-	"alessandro-c/gomemcached-lock/adapters/gomemcache"
-	owntesting "alessandro-c/gomemcached-lock/testing"
+	"github.com/alessandro-c/gomemcached-lock/adapters/gomemcache"
+	owntesting "github.com/alessandro-c/gomemcached-lock/testing"
 	"github.com/bradfitz/gomemcache/memcache"
 	"sync"
 	"testing"

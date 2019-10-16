@@ -24,7 +24,7 @@ $ go get github.com/alessandro-c/gomemcached-lock
 import (
     "time"
     locker "github.com/alessandro-c/gomemcached-lock"
-    gomemcacheAdaptor "alessandro-c/gomemcached-lock/adapters/gomemcache"
+    gomemcacheAdaptor "github.com/alessandro-c/gomemcached-lock/adapters/gomemcache"
 	"github.com/bradfitz/gomemcache/memcache"
 )
 

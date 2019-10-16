@@ -5,9 +5,9 @@
 package lock
 
 import (
-	"alessandro-c/gomemcached-lock/adapters"
 	"errors"
 	"fmt"
+	"github.com/alessandro-c/gomemcached-lock/adapters"
 	"github.com/thanhpk/randstr"
 	"time"
 )
