@@ -1,9 +1,7 @@
 package lock
 
 import (
-	"github.com/alessandro-c/gomemcached-lock/adapters/gomemcache"
 	owntesting "github.com/alessandro-c/gomemcached-lock/testing"
-	"github.com/bradfitz/gomemcache/memcache"
 	"sync"
 	"testing"
 )
@@ -13,9 +11,8 @@ import (
 func TestLock(t *testing.T) {
 
 	tc := owntesting.Setup(t)
-
-	mc := memcache.New(owntesting.TestServer)
-	ca := gomemcache.New(mc)
+	
+	ca := owntesting.NewTestAdapter(owntesting.TestServer)
 
 	var wg sync.WaitGroup
 
@@ -55,8 +52,7 @@ func TestLock(t *testing.T) {
 func TestGetCurrentOwner(t *testing.T) {
 	tc := owntesting.Setup(t)
 
-	mc := memcache.New(owntesting.TestServer)
-	ca := gomemcache.New(mc)
+	ca := owntesting.NewTestAdapter(owntesting.TestServer)
 
 	l := New(ca, "foolock", "")
 
@@ -86,8 +82,7 @@ func TestGetCurrentOwner(t *testing.T) {
 func TestRelease(t *testing.T) {
 	tc := owntesting.Setup(t)
 
-	mc := memcache.New(owntesting.TestServer)
-	ca := gomemcache.New(mc)
+	ca := owntesting.NewTestAdapter(owntesting.TestServer)
 
 	lOwner := New(ca, "foolock", "")
 
