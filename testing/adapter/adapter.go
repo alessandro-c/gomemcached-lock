@@ -1,4 +1,4 @@
-package testing
+package adapter
 
 import (
 	"github.com/alessandro-c/gomemcached-lock/adapters"

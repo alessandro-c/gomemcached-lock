@@ -2,6 +2,7 @@ package lock
 
 import (
 	owntesting "github.com/alessandro-c/gomemcached-lock/testing"
+	"github.com/alessandro-c/gomemcached-lock/testing/adapter"
 	"sync"
 	"testing"
 )
@@ -12,17 +13,17 @@ func TestLock(t *testing.T) {
 
 	tc := owntesting.Setup(t)
 
-	ca := owntesting.NewTestAdapter(owntesting.TestServer)
+	ca := adapter.NewTestAdapter(owntesting.TestServer)
 
 	var wg sync.WaitGroup
 
 	var mutex = &sync.Mutex{}
 	var totalLocks = 0 // for the test to succeed the value has to be 1
 
-	for i := 0; i < 1024; i++ {
+	for i := 0; i < 1000; i++ {
 		wg.Add(1)
 		go func() {
-			l := New(ca, "foolock", "")
+			l := New(adapter.NewTestAdapter(owntesting.TestServer), "foolock", "")
 			if err := l.Lock(0); err == nil {
 				mutex.Lock()
 				totalLocks = totalLocks + 1
@@ -52,7 +53,7 @@ func TestLock(t *testing.T) {
 func TestGetCurrentOwner(t *testing.T) {
 	tc := owntesting.Setup(t)
 
-	ca := owntesting.NewTestAdapter(owntesting.TestServer)
+	ca := adapter.NewTestAdapter(owntesting.TestServer)
 
 	l := New(ca, "foolock", "")
 
@@ -82,7 +83,7 @@ func TestGetCurrentOwner(t *testing.T) {
 func TestRelease(t *testing.T) {
 	tc := owntesting.Setup(t)
 
-	ca := owntesting.NewTestAdapter(owntesting.TestServer)
+	ca := adapter.NewTestAdapter(owntesting.TestServer)
 
 	lOwner := New(ca, "foolock", "")
 
