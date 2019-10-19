@@ -11,7 +11,7 @@ import (
 func TestLock(t *testing.T) {
 
 	tc := owntesting.Setup(t)
-	
+
 	ca := owntesting.NewTestAdapter(owntesting.TestServer)
 
 	var wg sync.WaitGroup
