@@ -31,13 +31,13 @@ func main() {
 
 	adapter := adapter.New(client)
 
-	lck := locker.New(adapter, "resource:to:lock", "")
+	lock := locker.New(adapter, "resource:to:lock", "")
 
-	err := lck.Lock(time.Minute * 5)
+	err := lock.Lock(time.Minute * 5)
 
 	if err == nil {
 		// lock acquired, do something ...
-		lck.Release()
+		lock.Release()
 	} else if err == locker.ErrNotAcquired {
 		// lost race ...
 	} else {
