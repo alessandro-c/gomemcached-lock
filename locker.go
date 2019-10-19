@@ -1,37 +1,36 @@
 // Package lock provides a simple lock/release library to be used on a single memcached instance.
 //
 // This package is compatible with https://github.com/bradfitz/gomemcache but
-// really any client will do, just implement the ./adapters.Adapter interface.
+// really any client will do, just implement the Adapter interface.
 package lock
 
 import (
 	"errors"
 	"fmt"
-	"github.com/alessandro-c/gomemcached-lock/adapters"
 	"github.com/thanhpk/randstr"
 	"time"
 )
 
 var (
-	// ErrNotAcquired is returned when a locker tries to lock an already locked resource
-	ErrNotAcquired = errors.New("locker: not acquired")
+	// ErrLockNotAcquired is returned when a locker tries to lock an already locked resource
+	ErrLockNotAcquired = errors.New("locker: not acquired")
 
-	// ErrNotFound is returned when a lock does not exist in memcached
-	ErrNotFound = errors.New("locker: not found")
+	// ErrLockNotFound is returned when a lock does not exist in memcached
+	ErrLockNotFound = errors.New("locker: not found")
 
-	// ErrForbidden is returned when an owner attempts to release a non-owned locked
-	ErrForbidden = errors.New("locker: forbidden")
+	// ErrLockForbidden is returned when an owner attempts to release a non-owned locked
+	ErrLockForbidden = errors.New("locker: forbidden")
 )
 
 // Locker is the main entrypoint for locking operations
 type Locker struct {
-	c     adapters.Adapter
+	c     Adapter
 	name  string
 	owner string
 }
 
 // New creates a new Locker instance
-func New(c adapters.Adapter, name, owner string) *Locker {
+func New(c Adapter, name, owner string) *Locker {
 	if len(owner) == 0 {
 		owner = randstr.String(8)
 	}
@@ -55,10 +54,10 @@ func (l *Locker) Lock(ttl time.Duration) (err error) {
 		owner, _ := l.GetCurrentOwner()
 		if owner != l.owner {
 			// RACE CONDITION! leave the lock to the actual owner
-			err = ErrNotAcquired
+			err = ErrLockNotAcquired
 		}
-	} else if err == adapters.ErrNotStored {
-		err = ErrNotAcquired
+	} else if err == ErrAdptNotStored {
+		err = ErrLockNotAcquired
 	}
 	return
 }
@@ -74,10 +73,10 @@ func (l *Locker) Release() (err error) {
 		if l.owner == owner {
 			err = l.c.Delete(l.name)
 		} else {
-			err = ErrForbidden
+			err = ErrLockForbidden
 		}
-	} else if err == ErrNotFound {
-		err = ErrNotFound
+	} else if err == ErrLockNotFound {
+		err = ErrLockNotFound
 	} else {
 		err = fmt.Errorf("locker: release - something went wrong : '%s'", err.Error())
 	}
@@ -88,8 +87,8 @@ func (l *Locker) Release() (err error) {
 // return ErrNotFound if lock does not exist
 func (l *Locker) GetCurrentOwner() (string, error) {
 	owner, err := l.c.Get(l.name)
-	if err == adapters.ErrNotFound {
-		return "", ErrNotFound
+	if err == ErrAdptNotFound {
+		return "", ErrLockNotFound
 	}
 	return owner, nil
 }

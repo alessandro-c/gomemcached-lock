@@ -35,15 +35,15 @@ func TestLock(t *testing.T) {
 	wg.Wait()
 
 	if totalLocks != 1 {
-		t.Errorf("one lock and one lock only MUST succeed : %d", totalLocks)
+		t.ErrLockorf("one lock and one lock only MUST succeed : %d", totalLocks)
 	}
 
 	err := New(ca, "foolock", "").Lock(0)
 
 	if err == nil {
-		t.Error("Lock succeeded but ErrNotAcquired should have been returned.")
-	} else if err != ErrNotAcquired {
-		t.Errorf("ErrNotAcquired should have been returned instead of '%s'", err)
+		t.ErrLockor("Lock succeeded but ErrLockNotAcquired should have been returned.")
+	} else if err != ErrLockNotAcquired {
+		t.ErrLockorf("ErrLockNotAcquired should have been returned instead of '%s'", err)
 	}
 
 	tc.Teardown()
@@ -58,21 +58,21 @@ func TestGetCurrentOwner(t *testing.T) {
 
 	cOwn, err := l.GetCurrentOwner()
 
-	if err != ErrNotFound {
-		t.Errorf("lock.ErrNotFound should have been returned")
+	if err != ErrLockNotFound {
+		t.ErrLockorf("lock.ErrLockNotFound should have been returned")
 	}
 
 	l.Lock(0)
 
 	owner, err := ca.Get("foolock")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.ErrLockorf(err.ErrLockor())
 	}
 
 	cOwn, _ = l.GetCurrentOwner()
 
 	if owner != cOwn {
-		t.Errorf("current owner should have been '%s'", owner)
+		t.ErrLockorf("current owner should have been '%s'", owner)
 	}
 
 	tc.Teardown()
@@ -88,8 +88,8 @@ func TestRelease(t *testing.T) {
 
 	err := lOwner.Release()
 
-	if err != ErrNotFound {
-		t.Errorf("lock.ErrNotFound should have been returned instead of : '%s'", err)
+	if err != ErrLockNotFound {
+		t.ErrLockorf("lock.ErrLockNotFound should have been returned instead of : '%s'", err)
 	}
 
 	lOwner.Lock(0)
@@ -97,8 +97,8 @@ func TestRelease(t *testing.T) {
 	lCheater := New(ca, "foolock", "")
 	err = lCheater.Release()
 
-	if err != ErrForbidden {
-		t.Errorf("lock.ErrForbidden should have been returned instead of : '%s'", err)
+	if err != ErrLockForbidden {
+		t.ErrLockorf("lock.ErrLockForbidden should have been returned instead of : '%s'", err)
 	}
 
 	tc.Teardown()
