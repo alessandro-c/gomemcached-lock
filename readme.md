@@ -1,5 +1,8 @@
 ## memcached lock
 
+[![Build Status](https://travis-ci.org/alessandro-c/gomemcached-lock.svg?branch=master)](https://travis-ci.org/alessandro-c/gomemcached-lock)
+[![Coverage Status](https://coveralls.io/repos/github/alessandro-c/gomemcached-lock/badge.svg?branch=master)](https://coveralls.io/github/alessandro-c/gomemcached-lock?branch=master)
+
 A simple lock/release library written in golang to be used with a single memcached instance.
 
 This package is compatible with [bradfitz/gomemcache](https://github.com/bradfitz/gomemcache) but
