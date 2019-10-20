@@ -20,7 +20,7 @@ func TestLock(t *testing.T) {
 	var mutex = &sync.Mutex{}
 	var totalLocks = 0 // for the test to succeed the value has to be 1
 
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 100; i++ {
 		wg.Add(1)
 		go func() {
 			l := New(adapter.NewTestAdapter(owntesting.TestServer), "foolock", "")
