@@ -17,7 +17,11 @@ func TestAdd(t *testing.T) {
 
 	duration := 1 * time.Minute
 
-	c.Add("foo", "bar", duration)
+	err := c.Add("foo", "bar", duration)
+
+	if err != nil {
+		t.Errorf("should have addedd successfully")
+	}
 
 	item, err := mc.Get("foo")
 
@@ -54,7 +58,12 @@ func TestGet(t *testing.T) {
 	mc := memcache.New(owntesting.TestServer)
 
 	c := New(mc)
-	c.Add("foo", "bar", 0)
+	err := c.Add("foo", "bar", 0)
+
+	if err != nil {
+		t.Errorf("should have addedd successfully")
+	}
+
 	value, err := c.Get("foo")
 
 	if err != nil {
@@ -81,9 +90,17 @@ func TestDelete(t *testing.T) {
 
 	c := New(mc)
 
-	c.Add("foo", "bar", 0)
+	err := c.Add("foo", "bar", 0)
 
-	c.Delete("foo")
+	if err != nil {
+		t.Errorf("should have addedd successfully")
+	}
+
+	err = c.Delete("foo")
+
+	if err != nil {
+		t.Errorf("should have deleted successfully")
+	}
 
 	item, err := mc.Get("foo")
 

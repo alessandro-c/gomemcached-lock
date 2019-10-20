@@ -57,20 +57,24 @@ func TestGetCurrentOwner(t *testing.T) {
 
 	l := New(ca, "foolock", "")
 
-	cOwn, err := l.GetCurrentOwner()
+	_, err := l.GetCurrentOwner()
 
 	if err != ErrNotFound {
 		t.Errorf("lock.ErrNotFound should have been returned")
 	}
 
-	l.Lock(0)
+	err = l.Lock(0)
+
+	if err != nil {
+		t.Errorf("should have locked successfully")
+	}
 
 	owner, err := ca.Get("foolock")
 	if err != nil {
 		t.Errorf(err.Error())
 	}
 
-	cOwn, _ = l.GetCurrentOwner()
+	cOwn, _ := l.GetCurrentOwner()
 
 	if owner != cOwn {
 		t.Errorf("current owner should have been '%s'", owner)
@@ -93,7 +97,11 @@ func TestRelease(t *testing.T) {
 		t.Errorf("lock.ErrNotFound should have been returned instead of : '%s'", err)
 	}
 
-	lOwner.Lock(0)
+	err = lOwner.Lock(0)
+
+	if err != nil {
+		t.Errorf("owner should have locked successfully")
+	}
 
 	lCheater := New(ca, "foolock", "")
 	err = lCheater.Release()

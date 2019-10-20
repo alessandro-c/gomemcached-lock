@@ -20,12 +20,22 @@ func Setup(t *testing.T) *TestCase {
 	if err != nil {
 		t.Errorf("no server running at %s", TestServer)
 	}
-	c.Write([]byte("flush_all\r\n"))
-	return &TestCase{t: t, conn: c}
+
+	tc := &TestCase{t: t, conn: c}
+	tc.flush()
+
+	return tc
 }
 
 // Teardown the test environment
 func (tc *TestCase) Teardown() {
-	tc.conn.Write([]byte("flush_all\r\n"))
+	tc.flush()
 	tc.conn.Close()
+}
+
+func (tc *TestCase) flush() {
+	_, err := tc.conn.Write([]byte("flush_all\r\n"))
+	if err != nil {
+		tc.t.Fatal("couldn't successfully flush")
+	}
 }
