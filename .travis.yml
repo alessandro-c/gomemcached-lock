@@ -1,7 +1,6 @@
 sudo: false
 language: go
 go:
-  - 1.9.x
   - 1.10.x
   - 1.11.x
   - 1.12.x
@@ -13,19 +12,6 @@ before_install:
 
 before_script:
   - sudo service memcached restart
-
-matrix:
-  include:
-      sudo: required
-      dist: trusty
-      go: 1.10.x
-      services:
-        - docker
-      before_install:
-        - docker pull memcached:alpine
-        - docker run -d -p 127.0.0.1:11211:11211 --name memcached
-        - go get golang.org/x/tools/cmd/cover
-        - go get github.com/mattn/goveralls
 
 script:
   - go test ./... -v -covermode=count -coverprofile=coverage.out

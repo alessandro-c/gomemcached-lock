@@ -102,5 +102,11 @@ func TestRelease(t *testing.T) {
 		t.Errorf("lock.ErrForbidden should have been returned instead of : '%s'", err)
 	}
 
+	err = lOwner.Release()
+
+	if err != nil {
+		t.Errorf("lock should have been released, instead an error occured %s", err.Error())
+	}
+
 	tc.Teardown()
 }
